@@ -54,14 +54,14 @@
                 FROM 
                     ' . $this->table . ' 
                 WHERE
-                    c.id = ?
-                LIMIT 0,1';
+                    id = :id
+                LIMIT 1 OFFSET 0';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Bind the id to the question mark
-            $stmt->bindParam(1, $this->id);
+            $stmt->bindParam(':id', $this->id);
 
             // Execute query
             $stmt->execute();
