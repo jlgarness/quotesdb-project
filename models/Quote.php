@@ -258,7 +258,11 @@
         // ***DELETE QUOTE***
         public function delete(){
             // Create query only for id
-            $query = 'DELETE FROM ' . $this->table . ' WHERE id= :id';
+            $query = 
+                    'DELETE FROM 
+                        " . $this->table . "
+                    WHERE id= :id
+                    ';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -271,15 +275,14 @@
 
             // Execute query
             if ($stmt->execute()){
-                return true;
+                if ($stmt->rowCount()==0){
+                    return false;
+                    } else {
+                    return true;
+                    }
+            } else {
+                // Print error if something goes wrong
+                 printf("Error: %s.\n", $stmt->error);
             }
 
-            // Print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            
-            return false;
-
-
         }
-
-    }
