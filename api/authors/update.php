@@ -6,37 +6,36 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Post.php';
+    include_once '../../models/Author.php';
 
     // Instatiate DB and connect
     $database = new Database();
     $db = $database->connect();
 
     // Instantiate blog post object 
-    $post = new Post($db);
+    $name = new Author($db);
 
-    // Get the raw posted data
+    // Retrieve
     $data = json_decode(file_get_contents("php://input"));
-
-    // Set id to be updated
-    $post->id = $data->id;
-
-    // Assign info in data to the post
-    $post->title = $data->title;
-    $post->body = $data->body;
-    $post->author = $data->author;
-    $post->category_id = $data->category_id;
-
-    // Update post
-    if($post->update()){
-        echo json_encode(
-            array('message' => 'Post Updated')
-        );
-    } else { 
-        echo json_encode(
-            array('message' => 'Post Not Updated')
-        );
+    if (!isset($data->id)|| !isset($data->author)) {
+        // Author not available
+        echo json_encode(array('message' => 'Missing Required Parameters'));
+        exit();
     }
+
+    // Set properties
+    $name->author = $data->author;
+    $name->id = $data->id;
+    
+    // Proceed with update
+    if ($name->update()){
+        echo json_encode(array('id'=>$name->id,'author'=>$name->author));
+    }
+    else
+    {
+        echo json_encode(array('message' => 'author_id Not Found'));
+    }
+
     
     
 
