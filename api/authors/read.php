@@ -4,27 +4,27 @@
     header('Content-Type: application/json');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Post.php';
+    include_once '../../models/Author.php';
 
     // Instatiate DB and connect
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate blog post object 
-    $author = new Author($db);
+    // Instantiate author object 
+    $name = new Author($db);
 
-    // Blog post query
-    $result = $author->read();
+    // Author query
+    $result = $name->read();
 
     // Get row count
     $num = $result->rowCount();
 
-    // Check if any posts exist
+    // Check if any authors exist
     if($num>0) {
         //Post array
         $authors_arr = array();
-        $authors_arr['data'] = array();
 
+        // Fetch author data
         while($row = $result->fetch(PDO::FETCH_ASSOC)){
             extract($row);
 
@@ -34,14 +34,14 @@
     
             );
 
-            // Push to "data" array
-            array_push($authors_arr['data'], $author_item);
+            // Push to array
+            array_push($authors_arr, $author_item);
         }
 
         // Convert to JSON & output
         echo json_encode($authors_arr);
     } else {
-        // No Posts
+        // No authors available
         echo json_encode(
             array('message' => 'No Authors Found')
         );
