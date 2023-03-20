@@ -132,6 +132,7 @@
 
             // Clean data to make sure no special characters and to strip tags
             $this->category = htmlspecialchars(strip_tags($this->category));
+            $this->id = htmlspecialchars(strip_tags($this->id));
            
             // Bind the data to attach to colon parameters above
             $stmt->bindParam(':category',$this->category);
