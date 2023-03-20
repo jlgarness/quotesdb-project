@@ -21,7 +21,7 @@
 
     // Check if any authors exist
     if($num>0) {
-        //Post array
+        //Authors array
         $authors_arr = array();
 
         // Fetch author data
