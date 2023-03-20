@@ -67,8 +67,15 @@
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Set the properties 
-            $this->category = $row['category'];
+            if($row)
+            {
+                // Set the properties 
+                $this->category = $row['category'];
+                $this->id = $row['id'];
+                return true;
+            } else {
+                return false;
+            }
         }
 
 
