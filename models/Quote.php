@@ -26,18 +26,95 @@
 
         // ***READ ALL QUOTES***
         public function read(){
-            // Create query
-            $query = 
-                'SELECT 
-                    q.id,
-                    q.quote,
-                    a.author,
-                    c.category,
-                    c.id as category_id,
-                    a.id as author_id
-                FROM 
-                    ' . $this->table . ' 
-                ';
+
+            // Create query depending on available data
+
+            // Query if author and category are available
+            if (isset($this->author_id) && isset($this->category_id)){
+                $query = 
+                    '
+                    SELECT 
+                        q.id,
+                        q.quote,
+                        a.author as author,
+                        c.category as category,
+                        c.id as category_id,
+                        a.id as author_id
+                    FROM 
+                        ' . $this->table . ' q
+                    INNER JOIN 
+                        authors a on q.author_id = a.id
+                    INNER JOIN 
+                        categories c on q.category_id = c.id
+                    WHERE
+                        a.id = :author_id
+                    AND
+                        c.id = :category_id
+                    ';
+            }
+
+             // Query if only author is available
+             else if (isset($this->author_id)){
+                $query = 
+                    '
+                    SELECT 
+                        q.id,
+                        q.quote,
+                        a.author as author,
+                        c.category as category,
+                    FROM 
+                        ' . $this->table . ' q
+                    INNER JOIN 
+                        authors a on q.author_id = a.id
+                    INNER JOIN 
+                        categories c on q.category_id = c.id
+                    WHERE
+                        a.id = :author_id
+                    ';
+             }
+
+            // Query if only category is available
+            else if (isset($this->category_id)){
+                $query = 
+                    '
+                    SELECT 
+                        q.id,
+                        q.quote,
+                        a.author as author,
+                        c.category as category,
+                    FROM 
+                        ' . $this->table . ' q
+                    INNER JOIN 
+                        authors a on q.author_id = a.id
+                    INNER JOIN 
+                        categories c on q.category_id = c.id
+                    WHERE
+                        c.id = :category_id
+                    ';
+            }
+
+            else {
+                $query = 
+                    '
+                    SELECT 
+                        q.id,
+                        q.quote,
+                        a.author as author,
+                        c.category as category,
+                    FROM 
+                        ' . $this->table . ' q
+                    INNER JOIN 
+                        authors a on q.author_id = a.id
+                    INNER JOIN 
+                        categories c on q.category_id = c.id
+                    ORDER BY
+                        q.id ASC
+                    ';
+            }
+
+            }
+
+
         // Prepare statement 
         $stmt = $this->conn->prepare($query);
         // Execute query
