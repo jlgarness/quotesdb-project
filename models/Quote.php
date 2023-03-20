@@ -146,13 +146,23 @@
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
-            // Bind the id to the question mark
-            $stmt->bindParam(1, $this->id);
+            // Bind parameters
+            $stmt->bindParam(':id', $this->id);
             // Execute query
             $stmt->execute();
+            // Pull row data
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row){
             // Set the properties 
             $this->quote = $row['quote'];
+            $this->id = $row['id'];
+            $this->author = $row['author'];
+            $this->category = $row['category'];
+            return true;
+            } else {
+                return false;
+            }
         }
 
 
@@ -162,30 +172,22 @@
 
             // Create query
             $query = 
-                'INSERT INTO ' . $this->table . '
-                    SET
-                        id = :id,
-                        quote = :quote,
-                        author = :author,
-                        category = :category,
-                        author_id = :author_id,
-                        category_id = :category_id';
+                'INSERT INTO 
+                    ".$this->table." (quote, author_id, category_id) 
+                VALUES(
+                :quote,:author_id,:category_id)
+                ';
+
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Clean data to make sure no special characters and to strip tags
-            $this->id = htmlspecialchars(strip_tags($this->id));
             $this->quote = htmlspecialchars(strip_tags($this->quote));
-            $this->author = htmlspecialchars(strip_tags($this->author));
-            $this->category = htmlspecialchars(strip_tags($this->category));
             $this->author_id = htmlspecialchars(strip_tags($this->author_id));
             $this->category_id = htmlspecialchars(strip_tags($this->category_id));
 
             // Bind the data to attach to colon parameters above
-            $stmt->bindParam(':id',$this->id);
-            $stmt->bindParam(':quote',$this->quote);
-            $stmt->bindParam(':quote',$this->author);
             $stmt->bindParam(':quote',$this->category);
             $stmt->bindParam(':author_id',$this->author_id);
             $stmt->bindParam(':category_id',$this->category_id);
@@ -210,44 +212,43 @@
 
             // Create query
             $query = 
-                'UPDATE ' . $this->table . '
+                'UPDATE 
+                    " . $this->table . "
                     SET
+                        id = :id,
                         quote = :quote,
-                        author = :author,
-                        category = :category,
                         author_id = :author_id,
                         category_id = :category_id
                     WHERE
-                        id = :id';
+                        id = :id
+                ';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Clean data to make sure no special characters and to strip tags
             $this->quote = htmlspecialchars(strip_tags($this->quote));
-            $this->author = htmlspecialchars(strip_tags($this->author));
-            $this->category = htmlspecialchars(strip_tags($this->category));
             $this->author_id = htmlspecialchars(strip_tags($this->author_id));
             $this->category_id = htmlspecialchars(strip_tags($this->category_id));
             $this->id = htmlspecialchars(strip_tags($this->id));
 
             // Bind the data to attach to colon parameters above
             $stmt->bindParam(':quote',$this->quote);
-            $stmt->bindParam(':author',$this->author);
-            $stmt->bindParam(':category',$this->category);
             $stmt->bindParam(':author_id',$this->author_id);
             $stmt->bindParam(':category_id',$this->category_id);
             $stmt->bindParam(':id',$this->id);
 
             // Execute query
             if ($stmt->execute()){
-                return true;
+                if ($stmt->rowCount()==0){
+                    return false;
+                    } else {
+                    return true;
+                    }
+            } else {
+                // Print error if something goes wrong
+                 printf("Error: %s.\n", $stmt->error);
             }
-
-            // Print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            
-            return false;
 
         }
 
