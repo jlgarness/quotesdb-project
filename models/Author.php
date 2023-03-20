@@ -10,7 +10,7 @@
        
 
         // Post Properties
-        private $id, $author;
+        public $id, $author;
 
     
         // Constructor with DB (runs automatically when instantiating class or class object)
@@ -18,37 +18,17 @@
             $this->conn = $db;
         }
 
-        // Getters and Setters
-         public function get_id() {
-            return $this->id;
-        }
-
-        public function set_id($id) {
-            $this->id = htmlspecialchars(strip_tags($id));
-        }
-
-        public function get_author() {
-            return $this->author;
-        }
-
-        public function set_author($author) {
-            $this->author = htmlspecialchars(strip_tags($author));
-        }
-
-
-
-
-
         // ***READ ALL AUTHORS***
         public function read(){
 
             // Create query
             $query = 
                 'SELECT 
-                    a.author,
-                    a.id 
+                    author,
+                    id 
                 FROM 
-                    ' . $this->table . ' a
+                    ' . $this->table . ' 
+                ORDER BY id ASC
                 ';
             
 
@@ -69,26 +49,35 @@
             // Create query
             $query = 
                 'SELECT 
-                    a.author,
-                    a.id 
+                    id
+                    author 
                 FROM 
-                    ' . $this->table . ' a
+                    ' . $this->table . ' 
                 WHERE
-                    a.id = ?
-                LIMIT 0,1';
+                    id = :id
+                LIMIT 1 OFFSET 0';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
+            // Clean data
+            $this->id = htmlspecialchars(strip_tags($this->id));
+
             // Bind the id to the question mark
-            $stmt->bindParam(1, $this->id);
+            $stmt->bindParam(':id"', $this->id);
 
             // Execute query
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            if($row){
             // Set the properties 
+            $this->id = $row['id'];
             $this->author = $row['author'];
+            return true;
+            } else {
+                return false;
+            }
         }
 
 
@@ -98,10 +87,10 @@
 
             // Create query
             $query = 
-                'INSERT INTO ' . $this->table . ' a
+                'INSERT INTO ' . $this->table . ' 
                     SET
-                        a.id = :id,
-                        a.author = :author
+                        id = :id,
+                        author = :author
                 ';
                         
             // Prepare statement
@@ -111,7 +100,7 @@
             $this->id = htmlspecialchars(strip_tags($this->id));
             $this->author = htmlspecialchars(strip_tags($this->author));
            
-            // Bind the data to attach to colon parameters above
+            // Bind the data to attach to parameters above
             $stmt->bindParam(':id',$this->id);
             $stmt->bindParam(':author',$this->author);
 
@@ -133,21 +122,23 @@
 
             // Create query
             $query = 
-                'UPDATE ' . $this->table . ' a
+                'UPDATE ' . $this->table . ' 
                     SET
-                       a.author = :author
+                       author = :author
 
                     WHERE
-                        a.id = :id';
+                        id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Clean data to make sure no special characters and to strip tags
             $this->author = htmlspecialchars(strip_tags($this->author));
+            $this->id = htmlspecialchars(strip_tags($this->id));
            
             // Bind the data to attach to colon parameters above
             $stmt->bindParam(':author',$this->author);
+            $stmt->bindParam(':id', $this->id);
            
             // Execute query
             if ($stmt->execute()){
@@ -162,13 +153,15 @@
         }
 
 
-
-
         // ***DELETE AUTHOR***
         public function delete(){
 
             // Create query only for id
-            $query = 'DELETE FROM ' . $this->table . ' WHERE a.id= :id';
+            $query = 
+                'DELETE FROM 
+                    ' . $this->table . ' 
+                WHERE 
+                    id= :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -182,13 +175,13 @@
             // Execute query
             if ($stmt->execute()){
                 return true;
-            }
+            } else {
 
             // Print error if something goes wrong
             printf("Error: %s.\n", $stmt->error);
             
             return false;
-
+            }
 
         }
 

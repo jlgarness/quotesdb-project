@@ -8,8 +8,8 @@
         private $table = 'categories';
 
         // Post Properties
-        public $id;
-        public $category;
+        public $id, $category;
+        
     
         // Constructor with DB (runs automatically when instantiating class or class object)
         public function __construct($db){
@@ -25,11 +25,12 @@
             // Create query
             $query = 
                 'SELECT 
-                    c.id,
-                    c.category
+                    id,
+                    category
                 
                 FROM 
                     ' . $this->table . ' 
+                ORDERED BY id ASC
                 ';
 
         // Prepare statement 
