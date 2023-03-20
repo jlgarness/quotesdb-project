@@ -32,8 +32,7 @@
             // Query if author and category are available
             if (isset($this->author_id) && isset($this->category_id)){
                 $query = 
-                    '
-                    SELECT 
+                    'SELECT 
                         q.id,
                         q.quote,
                         a.author as author,
@@ -41,7 +40,7 @@
                         c.id as category_id,
                         a.id as author_id
                     FROM 
-                        ' . $this->table . ' q
+                        " . $this->table . " q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -49,21 +48,19 @@
                     WHERE
                         a.id = :author_id
                     AND
-                        c.id = :category_id
-                    ';
+                        c.id = :category_id';
             }
 
              // Query if only author is available
              else if (isset($this->author_id)){
                 $query = 
-                    '
-                    SELECT 
+                    'SELECT 
                         q.id,
                         q.quote,
                         a.author as author,
                         c.category as category,
                     FROM 
-                        ' . $this->table . ' q
+                        " . $this->table . " q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -76,14 +73,13 @@
             // Query if only category is available
             else if (isset($this->category_id)){
                 $query = 
-                    '
-                    SELECT 
+                    'SELECT 
                         q.id,
                         q.quote,
                         a.author as author,
                         c.category as category,
                     FROM 
-                        ' . $this->table . ' q
+                        " . $this->table . " q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -95,14 +91,13 @@
 
             else {
                 $query = 
-                    '
-                    SELECT 
+                    'SELECT 
                         q.id,
                         q.quote,
                         a.author as author,
                         c.category as category,
                     FROM 
-                        ' . $this->table . ' q
+                        " . $this->table . " q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -134,13 +129,20 @@
         public function read_single(){
             // Create query
             $query = 
-                'SELECT 
-                    quote 
-                FROM 
-                    ' . $this->table . ' 
-                WHERE
-                    p.id = ?
-                LIMIT 0,1';
+                'SELECT
+                    q.id, 
+                    q.quote,
+                    a.author as author,
+                    c.category as category               
+                FROM ". $this->table ." q
+                INNER JOIN 
+                    authors a on q.author_id = a.id
+                INNER JOIN 
+                    categories c on q.category_id = c.id 
+                WHERE 
+                    q.id = :id
+                LIMIT 1 OFFSET 0'
+            ;
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
