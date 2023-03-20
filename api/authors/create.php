@@ -26,6 +26,7 @@
         $name->author = $data->author;
         $name->create();
         echo json_encode(array('id'=> $db->lastInsertId(),'author'=>$name->author));
+        
     }
 
     
