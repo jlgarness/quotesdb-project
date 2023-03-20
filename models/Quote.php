@@ -117,6 +117,11 @@
 
         // Prepare statement 
         $stmt = $this->conn->prepare($query);
+
+        // Set bind parameters
+        if($this->author_id) $stmt->bindParam(':author_id', $this->author_id);
+        if($this->category_id) $stmt->bindParam(':category_id', $this->category_id);
+
         // Execute query
         $stmt->execute();
         return $stmt;
