@@ -4,27 +4,31 @@
     header('Content-Type: application/json');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Post.php';
+    include_once '../../models/Category.php';
 
     // Instatiate DB and connect
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate blog post object 
-    $category = new Category($db);
+    // Instantiate cat object 
+    $cat = new Category($db);
 
     // Get the id from the URL
-    $category->id = isset($_GET['id']) ? $_GET['id'] : die();
+    $cat->id = isset($_GET['id']) ? $_GET['id'] : die();
 
     // Call the read single method to get category
-    $category->read_single();
+    if($cat->read_single()) {
 
-    // Create an array
-    $cat_arr = array(
-        'id' => $category->id,
-        'category'=> $category -> category,
-        
-    );
-
-    // Convert to JSON
-    print_r(json_encode($cat_arr));
+        echo json_encode(array(
+          'id' => $cat->id,
+          'category' => $cat->category
+        ));
+      }
+      // If category_id is not found- error message
+    else {
+        echo json_encode(array(
+        'message' => 'category_id Not Found'
+      ));
+  
+    }
+  
