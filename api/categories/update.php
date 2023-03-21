@@ -12,7 +12,7 @@
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate blog post object 
+    // Instantiate cat object 
     $cat = new Category($db);
 
     // Retrieve
