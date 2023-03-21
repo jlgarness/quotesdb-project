@@ -4,5 +4,5 @@
     SetEnv USERNAME "quotesdb_ymdf_user"
     SetEnv PASSWORD "dgkoVlEjq3ZjEedBKrQKstkSzCAAjNhK"
     SetEnv DBNAME "quotesdb_ymdf"
-    SetEnv HOST "dpg-cgcvdse4dad6fr7q1nfg-a"
+    SetEnv HOST "dpg-cgcvdse4dad6fr7q1nfg-a.oregon-postgres.render.com"
     SetEnv PORT "5432"
