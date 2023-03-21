@@ -11,10 +11,10 @@
     $db = $database->connect();
 
     // Instantiate category  object 
-    $category = new Category($db);
+    $cat = new Category($db);
 
     // Category read query
-    $result = $category->read();
+    $result = $cat->read();
 
     // Get row count
     $num = $result->rowCount();
@@ -23,20 +23,17 @@
     if($num>0) {
         //Cat array
         $cat_arr = array();
-        $cat_arr['data'] = array();
 
         while($row = $result->fetch(PDO::FETCH_ASSOC)){
             extract($row);
 
             $cat_item = array(
                 'id' => $id,
-                'category' => $category
-
-                
+                'category' => $category         
             );
 
-            // Push to "data" array
-            array_push($cat_arr['data'], $cat_item);
+            // Push to array
+            array_push($cat_arr, $cat_item);
         }
 
         // Convert to JSON & output
