@@ -8,7 +8,17 @@
         private $conn;
         private $port;
 
-        // Retrieve env variable data
+
+        public function __construct(){
+            $this->username = 'postgres';
+            $this->password = '2461';
+            $this->db_name = 'quotesdb';
+            $this->host = 'dpg-cgcvdse4dad6fr7q1nfg-a';
+            $this->port = '5432';
+        }
+
+
+        /* Retrieve env variable data to hide info
         public function __construct(){
             $this->username = getenv('USERNAME');
             $this->password = getenv('PASSWORD');
@@ -16,6 +26,7 @@
             $this->host = getenv('HOST');
             $this->port = getenv('PORT');
         }
+        */
         
         // DB Connect
         public function connect(){

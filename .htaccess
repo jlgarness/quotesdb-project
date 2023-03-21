@@ -1,0 +1,8 @@
+
+// Env variables for hidden data
+
+    SetEnv USERNAME "postgres"
+    SetEnv PASSWORD "2461"
+    SetEnv DBNAME "quotesdb"
+    SetEnv HOST "dpg-cgcvdse4dad6fr7q1nfg-a"
+    SetEnv PORT "5432"
