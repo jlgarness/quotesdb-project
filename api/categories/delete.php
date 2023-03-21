@@ -23,6 +23,7 @@
     // If no data
     echo(json_encode(array('message' => 'Missing Required Parameters'))); 
     } else {
+    // Proceed with deletion
     $cat->id = $data->id;
     $cat->delete();
     echo(json_encode(array('id'=>$cat->id)));
