@@ -4,46 +4,47 @@
     header('Content-Type: application/json');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Category.php';
+    include_once '../../models/Quote.php';
 
     // Instatiate DB and connect
     $database = new Database();
     $db = $database->connect();
 
     // Instantiate quotes  object 
-    $quote = new Quote($db);
+    $quote_all = new Quote($db);
 
-    // Category read query
-    $result = $quote->read();
+    // Retrieve data if available 
+    if (isset($_GET['author_id'])) $quote_all->author_id = $_GET['author_id'];
+    if (isset($_GET['category_id'])) $quote_all->category_id = $_GET['category_id'];
+
+    // Get database results
+    $result = $quote_all->read();
 
     // Get row count
     $num = $result->rowCount();
 
-    // Check if any quotes exist
-    if($num>0) {
-        //Quote array
-        $quote_arr = array();
-        $quote_arr['data'] = array();
+    // If rows exist, create array
+    if ($num > 0)
+    {
+      $quote_all_arr = array();
 
-        while($row = $result->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+          extract($row);
+          $quote_item = array(
+              'id' => $id,
+              'quote' => html_entity_decode($quote),
+              'author' => $author,
+              'category' => $category
+          );
 
-            $quote_items = array(
-                'id' => $id,
-                'quote' => $quote,
-                'category_id' => $category_id,
-                'author_id' => $author_id  
-            );
+      array_push($quotes_all_arr, $quote_item);
+      }
+      // Echo array in json
+      echo json_encode($quotes_all_arr);
 
-            // Push to "data" array
-            array_push($quote_arr['data'], $quote_items);
-        }
+    }
 
-        // Convert to JSON & output
-        echo json_encode($quote_arr);
-    } else {
-        // No Categories
-        echo json_encode(
-            array('message' => 'No Quotes Found')
-        );
+    // Error message for failure
+    else {
+      echo json_encode(array('message' => "No Quotes Found!"));
     }
