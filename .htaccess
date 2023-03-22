@@ -1,8 +1,8 @@
 
-// Env variables for hidden data
+// Env variable data
 
-    SetEnv USERNAME "quotesdb_ymdf_user"
-    SetEnv PASSWORD "dgkoVlEjq3ZjEedBKrQKstkSzCAAjNhK"
-    SetEnv DBNAME "quotesdb_ymdf"
-    SetEnv HOST "dpg-cgcvdse4dad6fr7q1nfg-a.oregon-postgres.render.com"
+    SetEnv USERNAME "jlgarness"
+    SetEnv PASSWORD "avSCnfZGpFvzUp1lQcoEoheYY9J6yoQA"
+    SetEnv DBNAME "quotesdb_7wk4"
+    SetEnv HOST "dpg-cgd5jqu4dad6omi74mo0-a.oregon-postgres.render.com"
     SetEnv PORT "5432"
