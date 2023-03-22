@@ -37,10 +37,10 @@
               'category' => $category
           );
 
-      array_push($quotes_all_arr, $quote_item);
+      array_push($quote_all_arr, $quote_item);
       }
       // Echo array in json
-      echo json_encode($quotes_all_arr);
+      echo json_encode($quote_all_arr);
 
     }
 

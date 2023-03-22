@@ -40,7 +40,7 @@
                         c.id as category_id,
                         a.id as author_id
                     FROM 
-                        " . $this->table . " q
+                        ' . $this->table . ' q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -60,7 +60,7 @@
                         a.author as author,
                         c.category as category,
                     FROM 
-                        " . $this->table . " q
+                        ' . $this->table . ' q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -79,7 +79,7 @@
                         a.author as author,
                         c.category as category,
                     FROM 
-                        " . $this->table . " q
+                        ' . $this->table . ' q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -97,7 +97,7 @@
                         a.author as author,
                         c.category as category,
                     FROM 
-                        " . $this->table . " q
+                        ' . $this->table . ' q
                     INNER JOIN 
                         authors a on q.author_id = a.id
                     INNER JOIN 
@@ -134,7 +134,7 @@
                     q.quote,
                     a.author as author,
                     c.category as category               
-                FROM ". $this->table ." q
+                FROM ' . $this->table . ' q
                 INNER JOIN 
                     authors a on q.author_id = a.id
                 INNER JOIN 
@@ -173,7 +173,7 @@
             // Create query
             $query = 
                 'INSERT INTO 
-                    ".$this->table." (quote, author_id, category_id) 
+                    ' . $this->table . ' (quote, author_id, category_id) 
                 VALUES(
                 :quote,:author_id,:category_id)
                 ';
@@ -213,7 +213,7 @@
             // Create query
             $query = 
                 'UPDATE 
-                    " . $this->table . "
+                    ' . $this->table . '
                     SET
                         id = :id,
                         quote = :quote,
@@ -260,7 +260,7 @@
             // Create query only for id
             $query = 
                     'DELETE FROM 
-                        " . $this->table . "
+                        ' . $this->table . '
                     WHERE id= :id
                     ';
 
