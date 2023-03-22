@@ -58,7 +58,7 @@
                         q.id,
                         q.quote,
                         a.author as author,
-                        c.category as category,
+                        c.category as category
                     FROM 
                         ' . $this->table . ' q
                     INNER JOIN 
@@ -77,7 +77,7 @@
                         q.id,
                         q.quote,
                         a.author as author,
-                        c.category as category,
+                        c.category as category
                     FROM 
                         ' . $this->table . ' q
                     INNER JOIN 
@@ -95,7 +95,7 @@
                         q.id,
                         q.quote,
                         a.author as author,
-                        c.category as category,
+                        c.category as category
                     FROM 
                         ' . $this->table . ' q
                     INNER JOIN 
